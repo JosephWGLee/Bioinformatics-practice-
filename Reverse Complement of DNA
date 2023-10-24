@@ -1,0 +1,4 @@
+DNA = "CGATCGATCGAT"
+Replace = (RC.replace("G", "c").replace("T", "a").replace("A", "t").replace("C", "g"))
+print (Replace.upper())
+# A very ham fisted approach to converted a DNA sequence into it's reverse complement
