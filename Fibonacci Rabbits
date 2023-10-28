@@ -1,0 +1,11 @@
+# a code to find the solution of how many rabbits are produced given two variables of month and how many pairs each rabbit litter produces
+# this was to try and learn dynamic programming and using functions. I found it very challenging 
+#for the print statement the first value is months an the second is pairs
+#could improve this using memoization 
+
+def Fibonacci_Loop(months, babies): #defining my function with a for loop two variables months and babies
+    parent, kid = 1 ,1 
+    for int in range(months - 1):
+        kid, parent = parent, parent + (kid * babies) #fibonacci algorithm 
+    return kid
+print (Fibonacci_Loop(33, 3))
