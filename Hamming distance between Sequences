@@ -1,0 +1,12 @@
+def hamming_distance(seq1, seq2): #definining my function, hamming function
+    distance = 0
+    for i in range(len(seq1)):
+         if seq1[i] != seq2[i]: #if a value in seq1 doesn't match that in seq2
+                distance += 1 #add one to the hamming distance 
+    return distance #return the hamming distance between the two strings
+seq1 = "ACCACACACACA"
+seq2 = "ACGTACGTCCCC"
+print ("Are the sequences identical:")
+print (seq1 == seq2)
+print ("How many differences are there between the sequences?")
+print (hamming_distance(seq1, seq2)) #a bunch of print statements to give a clean output
