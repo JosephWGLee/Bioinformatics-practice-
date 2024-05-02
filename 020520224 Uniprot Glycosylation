@@ -1,0 +1,37 @@
+#Placeholder: Function and code uploaded just in case. Example Protein IDS used for Uniprot. Placeholders to test my functions
+import urllib.request
+import requests
+uniprotID = "B5ZC00"
+proteinurl = "http://uniprot.org/uniprot/" + uniprotID + ".txt"
+print(proteinurl)
+import requests
+
+def sequence_extraction(uniprotID): 
+    proteinurl = "http://uniprot.org/uniprot/" + uniprotID + ".txt" 
+    file_contents = requests.get(proteinurl)
+
+    if file_contents.status_code == 200: #http code to say that the webpage is ok 
+        lines = file_contents.text.split('\n')
+        sequence = "" #variable sequence is empty but I can append data to it 
+        in_sequence = False
+
+        for line in lines: #ok this is my for loop to search the .txt file for "SQ" going through each line of the text file
+            if line.startswith("SQ"):
+                in_sequence = True
+                continue  #continue used in loops to skip the rest of the code and move to the next iteration.
+
+            if in_sequence and line.strip():
+                line = line.replace(" ", "").replace("/", "") #replaces and any spaces or / with nothing
+                sequence += line # Concatenate the sequence lines to the variable sequence 
+                
+        if sequence:  
+            return sequence
+        else:
+            return "No sequence found for the provided UniProt ID."
+    else:
+        return "UNIPROT ERROR: Invalid UniProt ID or resource not found."
+
+    
+uniprotID = "B5ZC00"
+protein_sequence = sequence_extraction(uniprotID)
+print(protein_sequence)
