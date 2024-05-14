@@ -35,3 +35,10 @@ def sequence_extraction(uniprotID):
 uniprotID = "B5ZC00"
 protein_sequence = sequence_extraction(uniprotID)
 print(protein_sequence)
+
+if re.search(r"(?!NPS|NPT)N*S|N*T", protein_sequence): 
+    print("n_glycosylation motif found at")
+else:
+    print("n_glycosylation motif NOT found")
+n_glycosylation_motif = (re.findall(r"N[^P][ST]", protein_sequence))
+print(n_glycosylation_motif)
