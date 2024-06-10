@@ -1,0 +1,55 @@
+import re
+import requests 
+file_path = r"C:\Users\Jofu2\Desktop\rosalind_mprt_5.txt"
+results = {}
+
+def ONLYuniprotID(line):
+    return line.split('_')[0] #Split at each underscore. Picks First element of underscore. So just the UNIPROT ID not the human etc
+
+    # Function to extract the protein sequence from UniProt database
+def sequence_extraction(uniprotID):
+    proteinurl = "http://uniprot.org/uniprot/" + uniprotID + ".txt"
+    file_contents = requests.get(proteinurl)
+
+    if file_contents.status_code == 200:  # http code to say that the webpage is ok 
+        lines = file_contents.text.split('\n')
+        sequence = ""  # variable sequence is empty but I can append data to it 
+        in_sequence = False
+
+        for line in lines:  # this is the for loop to search the .txt file for "SQ" going through each line of the text file
+            if line.startswith("SQ"):
+                in_sequence = True
+                continue  # continue used in loops to skip the rest of the code and move to the next iteration.
+
+            if in_sequence and line.strip():
+                line = line.replace(" ", "").replace("/", "")  # replaces any spaces or / with nothing
+                sequence += line  # Concatenate the sequence lines to the variable sequence 
+
+        if sequence:
+            return sequence
+        else:
+            print(f"No sequence found for UniProt ID: {uniprotID}")
+            return None
+    else:
+        print(f"UNIPROT ERROR: Invalid UniProt ID or resource not found for {uniprotID}")
+        return None
+
+        # Function to search for the N-glycosylation motif
+def n_glycosylation_search(protein_sequence):
+    n_glycosylation = re.finditer(r"N(?=([^P][ST][^P]))", protein_sequence)  # Corrected regex pattern
+    positions = [match.start() + 1 for match in n_glycosylation]  # +1 to convert from counting from 0 to counting from 1
+    return positions
+
+# Opening the file and processing each UniProt ID
+#This last because sequence extraction and n glycosylation search are within it 
+with open(file_path, 'r') as file:
+    for line in file:
+        uniprotID = ONLYuniprotID(line.strip())
+        protein_sequence = sequence_extraction(uniprotID)
+        if protein_sequence:
+            glycosylation_sites = n_glycosylation_search(protein_sequence)  # searches and saves the locations
+            results[uniprotID] = glycosylation_sites
+
+# Printing the results
+for uniprotID, sites in results.items():
+    print(f"UniProt ID: {uniprotID}, N-glycosylation site: {sites}")
