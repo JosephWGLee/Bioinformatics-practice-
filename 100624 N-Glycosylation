@@ -1,3 +1,8 @@
+#Fixed issues with code not working for specific datasets that include a _HUMAN_, _BOVIN_, etc.
+#Some of the ROSALIND datasets use old UniprotIDs that have been split into separate so I am now calling this done
+
+
+
 import re
 import requests 
 file_path = r"C:\Users\Jofu2\Desktop\rosalind_mprt_5.txt"
